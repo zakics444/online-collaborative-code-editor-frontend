@@ -19,9 +19,9 @@ const App = () => {
     return (
         <Router>
             <Routes>
-                {/* Sign-up and Login Routes */}
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/login" element={<Login />} />
+                {/* Signup/Login Routes */}
+                <Route path="/signup" element={<Signup />} />  {/* Sign-up Route */}
+                <Route path="/login" element={<Login />} />    {/* Login Route */}
 
                 {/* Project Creation/Joining */}
                 <Route path="/project" element={isAuthenticated ? <Project /> : <Navigate to="/login" />} />
@@ -30,7 +30,7 @@ const App = () => {
                 <Route path="/editor" element={isAuthenticated ? <Editor /> : <Navigate to="/login" />} />
                 <Route path="/chat" element={isAuthenticated ? <Chat /> : <Navigate to="/login" />} />
 
-                {/* Redirect to login if no other routes match */}
+                {/* Default route should redirect to login */}
                 <Route path="/" element={<Navigate to="/login" />} />
             </Routes>
         </Router>

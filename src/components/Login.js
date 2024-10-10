@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from '../services/axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';  // Added Link
 
 const Login = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
@@ -43,8 +43,12 @@ const Login = () => {
                 />
                 <button type="submit">Login</button>
             </form>
+
+            {/* Link to Signup */}
+            <p>Don't have an account? <Link to="/signup">Sign up here</Link></p>  {/* Added Signup Link */}
         </div>
     );
 };
 
 export default Login;
+
