@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import axios from '../services/axios';  // Using the axios instance for API calls
-import { useHistory } from 'react-router-dom';
+import axios from '../services/axios';
+import { useNavigate } from 'react-router-dom';  // Updated import
 
 const Login = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
-    const history = useHistory();
+    const navigate = useNavigate();  // Use useNavigate instead of useHistory
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -14,9 +14,9 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('/auth/login', formData);  // Sending login request to backend
-            localStorage.setItem('token', response.data.token);  // Store token in local storage
-            history.push('/project');  // Redirect to project creation/join page after successful login
+            const response = await axios.post('/auth/login', formData);
+            localStorage.setItem('token', response.data.token);
+            navigate('/project');  // Replaced history.push with navigate
         } catch (error) {
             console.error('Login failed:', error);
         }

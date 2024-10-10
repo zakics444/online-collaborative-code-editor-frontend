@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import axios from '../services/axios';  // Using the axios instance for API calls
-import { useHistory } from 'react-router-dom';
+import axios from '../services/axios';
+import { useNavigate } from 'react-router-dom';  // Updated import
 
 const Signup = () => {
     const [formData, setFormData] = useState({ name: '', email: '', password: '' });
-    const [loading, setLoading] = useState(false);  // Loading state to prevent multiple submissions
-    const [error, setError] = useState(null);  // Error state for displaying errors
-    const history = useHistory();
+    const navigate = useNavigate();  // Use useNavigate instead of useHistory
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -14,25 +12,19 @@ const Signup = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true);
-        setError(null);  // Reset error state before making the API call
 
         try {
-            const response = await axios.post('/auth/signup', formData);  // API request for signup
-            localStorage.setItem('token', response.data.token);  // Store JWT token
-            history.push('/project');  // Redirect to the project page after successful signup
+            const response = await axios.post('/auth/signup', formData);
+            localStorage.setItem('token', response.data.token);
+            navigate('/project');  // Replaced history.push with navigate
         } catch (error) {
             console.error('Signup failed:', error);
-            setError('Failed to sign up. Please try again.');  // Set a user-friendly error message
-        } finally {
-            setLoading(false);
         }
     };
 
     return (
         <div>
             <h2>Signup</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
@@ -58,13 +50,10 @@ const Signup = () => {
                     onChange={handleInputChange}
                     required
                 />
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Signing up...' : 'Sign Up'}
-                </button>
+                <button type="submit">Sign Up</button>
             </form>
         </div>
     );
 };
 
 export default Signup;
-
