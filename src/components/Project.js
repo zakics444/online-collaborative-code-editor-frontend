@@ -11,20 +11,32 @@ const Project = () => {
     };
 
     const handleCreateProject = async () => {
+        console.log("Creating project with data:", projectData);  // Debugging log
+
         try {
-            await axios.post('/projects/create', projectData);
-            navigate('/editor');  // Redirect to editor after creating project
+            const response = await axios.post('/projects/create', projectData);
+            console.log("Create project response:", response);  // Debugging log
+            if (response.status === 201) {
+                navigate('/editor');  // Navigate to editor if the project is created
+            }
         } catch (error) {
             console.error('Error creating project', error);
+            alert('Failed to create project. Check the console for errors.');
         }
     };
 
     const handleJoinProject = async () => {
+        console.log("Joining project with data:", projectData);  // Debugging log
+
         try {
-            await axios.post('/projects/join', projectData);
-            navigate('/editor');  // Redirect to editor after joining project
+            const response = await axios.post('/projects/join', projectData);
+            console.log("Join project response:", response);  // Debugging log
+            if (response.status === 200) {
+                navigate('/editor');  // Navigate to editor if project is joined
+            }
         } catch (error) {
             console.error('Error joining project', error);
+            alert('Failed to join project. Check the console for errors.');
         }
     };
 

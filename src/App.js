@@ -20,8 +20,8 @@ const App = () => {
         <Router>
             <Routes>
                 {/* Signup/Login Routes */}
-                <Route path="/signup" element={<Signup />} />  {/* Sign-up Route */}
-                <Route path="/login" element={<Login />} />    {/* Login Route */}
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/login" element={<Login />} />
 
                 {/* Project Creation/Joining */}
                 <Route path="/project" element={isAuthenticated ? <Project /> : <Navigate to="/login" />} />
