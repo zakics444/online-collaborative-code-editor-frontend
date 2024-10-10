@@ -1,65 +1,54 @@
 import React, { useState } from 'react';
-import axios from '../services/axios';  // Using the axios instance for API calls
-import { useNavigate } from 'react-router-dom';
+import axios from '../services/axios';  // Make sure axios is properly set up for API calls
+import { useNavigate } from 'react-router-dom';  // For navigation after project creation/joining
 
 const Project = () => {
     const [projectData, setProjectData] = useState({ projectName: '', password: '' });
-    const [loading, setLoading] = useState(false);  // Loading state for UI feedback
-    const [error, setError] = useState(null);  // Error state for handling errors
-    const navigate = useNavigate();  // useNavigate hook for programmatic navigation
+    const navigate = useNavigate();  // For redirecting after project creation or joining
 
     const handleInputChange = (e) => {
         setProjectData({ ...projectData, [e.target.name]: e.target.value });
-        setError(null);  // Clear previous errors on input change
     };
 
+    // Create Project (with token in the header)
     const handleCreateProject = async () => {
-        setLoading(true);  // Start loading
-
-        console.log("Sending project creation request with data:", projectData);  // Debugging log
+        const token = localStorage.getItem('token');  // Get the token from local storage
+        const config = {
+            headers: {
+                'Authorization': `Bearer ${token}`  // Send token in the Authorization header
+            }
+        };
 
         try {
-            const response = await axios.post('/projects/create', projectData);
-            console.log("Create project response:", response);  // Debugging log
-            
-            setLoading(false);  // Stop loading
-
-            if (response.status === 201) {
-                navigate('/editor');  // Redirect to editor after project creation
-            }
+            // Make the POST request to create the project
+            await axios.post('/projects/create', projectData, config);
+            navigate('/editor');  // Redirect to the editor after successful project creation
         } catch (error) {
-            setLoading(false);  // Stop loading
-            console.error("Error in project creation:", error);  // Debugging log
-            setError(error.response?.data?.error || 'Failed to create project.');
+            console.error('Error creating project', error);  // Handle error if project creation fails
         }
     };
 
+    // Join Project (with token in the header)
     const handleJoinProject = async () => {
-        setLoading(true);  // Start loading
-
-        console.log("Joining project with data:", projectData);  // Debugging log
+        const token = localStorage.getItem('token');  // Get the token from local storage
+        const config = {
+            headers: {
+                'Authorization': `Bearer ${token}`  // Send token in the Authorization header
+            }
+        };
 
         try {
-            const response = await axios.post('/projects/join', projectData);
-            console.log("Join project response:", response);  // Debugging log
-            
-            setLoading(false);  // Stop loading
-
-            if (response.status === 200) {
-                navigate('/editor');  // Redirect to editor after joining project
-            }
+            // Make the POST request to join the project
+            await axios.post('/projects/join', projectData, config);
+            navigate('/editor');  // Redirect to the editor after joining the project
         } catch (error) {
-            setLoading(false);  // Stop loading
-            console.error('Error joining project:', error);  // Debugging log
-            setError(error.response?.data?.error || 'Failed to join project.');
+            console.error('Error joining project', error);  // Handle error if project joining fails
         }
     };
 
     return (
         <div>
             <h2>Create or Join a Project</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-
             <input
                 type="text"
                 name="projectName"
@@ -76,12 +65,8 @@ const Project = () => {
                 onChange={handleInputChange}
                 required
             />
-            <button onClick={handleCreateProject} disabled={loading}>
-                {loading ? 'Creating Project...' : 'Create Project'}
-            </button>
-            <button onClick={handleJoinProject} disabled={loading}>
-                {loading ? 'Joining Project...' : 'Join Project'}
-            </button>
+            <button onClick={handleCreateProject}>Create Project</button>
+            <button onClick={handleJoinProject}>Join Project</button>
         </div>
     );
 };

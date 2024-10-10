@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import axios from '../services/axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';  // Using useNavigate instead of useHistory for React Router v6
 
-const Signup = ({ setIsAuthenticated }) => {
+const Signup = () => {
     const [formData, setFormData] = useState({ name: '', email: '', password: '' });
-    const [error, setError] = useState('');  // Error handling
-    const navigate = useNavigate();
+    const navigate = useNavigate();  // Using useNavigate
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -13,16 +12,17 @@ const Signup = ({ setIsAuthenticated }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError('');  // Reset error message
 
         try {
-            const response = await axios.post('/auth/signup', formData);  // Make the signup request
-            localStorage.setItem('token', response.data.token);  // Store the token
-            setIsAuthenticated(true);  // Set the user as authenticated
-            navigate('/project');  // Redirect to the project page
+            const response = await axios.post('/auth/signup', formData);
+            
+            // Store JWT token in localStorage after signup
+            localStorage.setItem('token', response.data.token);
+            
+            // Redirect to project page after successful signup
+            navigate('/project');
         } catch (error) {
             console.error('Signup failed:', error);
-            setError('Signup failed. Please try again.');  // Display an error message if signup fails
         }
     };
 
@@ -56,8 +56,6 @@ const Signup = ({ setIsAuthenticated }) => {
                 />
                 <button type="submit">Sign Up</button>
             </form>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <p>Already have an account? <a href="/login">Login here</a></p>
         </div>
     );
 };
