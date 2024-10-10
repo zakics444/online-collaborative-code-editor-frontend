@@ -12,21 +12,21 @@ const App = () => {
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
-            setIsAuthenticated(true);
+            setIsAuthenticated(true); // If a token exists, the user is authenticated
         }
     }, []);
 
     return (
         <Router>
             <Routes>
-                {/* Signup/Login Routes */}
+                {/* Login and Signup Routes */}
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/login" element={<Login />} />
 
-                {/* Project Creation/Joining */}
+                {/* Project creation and joining routes */}
                 <Route path="/project" element={isAuthenticated ? <Project /> : <Navigate to="/login" />} />
 
-                {/* Editor and Chat */}
+                {/* Editor and Chat routes */}
                 <Route path="/editor" element={isAuthenticated ? <Editor /> : <Navigate to="/login" />} />
                 <Route path="/chat" element={isAuthenticated ? <Chat /> : <Navigate to="/login" />} />
 

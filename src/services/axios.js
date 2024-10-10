@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Get the backend URL from environment variables (for production) or fallback to Render URL (for deployment)
-const apiUrl = process.env.REACT_APP_API_URL || 'https://online-collaborative-code-editor-backend.onrender.com/api';  // Replace with your actual Render URL
+const apiUrl = process.env.REACT_APP_API_URL || 'https://online-collaborative-code-editor-backend.onrender.com';  // Replace with your actual Render URL
 
 // Create Axios instance with default configuration
 const axiosInstance = axios.create({
