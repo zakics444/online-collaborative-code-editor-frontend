@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import axios from '../services/axios';
-import { useNavigate } from 'react-router-dom';  // Updated import
+import { useNavigate } from 'react-router-dom';
 
 const Project = () => {
     const [projectData, setProjectData] = useState({ projectName: '', password: '' });
-    const navigate = useNavigate();  // Use useNavigate instead of useHistory
+    const navigate = useNavigate();
 
     const handleInputChange = (e) => {
         setProjectData({ ...projectData, [e.target.name]: e.target.value });
@@ -13,7 +13,7 @@ const Project = () => {
     const handleCreateProject = async () => {
         try {
             await axios.post('/projects/create', projectData);
-            navigate('/editor');  // Replaced history.push with navigate
+            navigate('/editor');  // Redirect to editor after creating project
         } catch (error) {
             console.error('Error creating project', error);
         }
@@ -22,7 +22,7 @@ const Project = () => {
     const handleJoinProject = async () => {
         try {
             await axios.post('/projects/join', projectData);
-            navigate('/editor');  // Replaced history.push with navigate
+            navigate('/editor');  // Redirect to editor after joining project
         } catch (error) {
             console.error('Error joining project', error);
         }

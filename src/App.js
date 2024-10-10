@@ -4,30 +4,31 @@ import Signup from './components/Signup';
 import Login from './components/Login';
 import Project from './components/Project';
 import Editor from './components/Editor';
+import Chat from './components/Chat';
 
 const App = () => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);  // Track if user is authenticated
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    // Check authentication status on component mount
     useEffect(() => {
-        const token = localStorage.getItem('token');  // Check if a token exists in local storage
+        const token = localStorage.getItem('token');
         if (token) {
-            setIsAuthenticated(true);  // Set authenticated if token exists
+            setIsAuthenticated(true);
         }
     }, []);
 
     return (
         <Router>
             <Routes>
-                {/* Signup/Login Routes */}
+                {/* Sign-up and Login Routes */}
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/login" element={<Login />} />
 
-                {/* Project page, only accessible if authenticated */}
+                {/* Project Creation/Joining */}
                 <Route path="/project" element={isAuthenticated ? <Project /> : <Navigate to="/login" />} />
 
-                {/* Editor page, only accessible if authenticated */}
+                {/* Editor and Chat */}
                 <Route path="/editor" element={isAuthenticated ? <Editor /> : <Navigate to="/login" />} />
+                <Route path="/chat" element={isAuthenticated ? <Chat /> : <Navigate to="/login" />} />
 
                 {/* Redirect to login if no other routes match */}
                 <Route path="/" element={<Navigate to="/login" />} />

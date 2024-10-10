@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import axios from '../services/axios';
-import { useNavigate } from 'react-router-dom';  // Updated import
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
     const [formData, setFormData] = useState({ name: '', email: '', password: '' });
-    const navigate = useNavigate();  // Use useNavigate instead of useHistory
+    const navigate = useNavigate();
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -12,11 +12,10 @@ const Signup = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         try {
             const response = await axios.post('/auth/signup', formData);
             localStorage.setItem('token', response.data.token);
-            navigate('/project');  // Replaced history.push with navigate
+            navigate('/project');  // Redirect to project creation/join page
         } catch (error) {
             console.error('Signup failed:', error);
         }
