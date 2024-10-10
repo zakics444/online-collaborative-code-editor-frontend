@@ -7,31 +7,30 @@ import Editor from './components/Editor';
 import Chat from './components/Chat';
 
 const App = () => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);  // Track if user is authenticated
 
+    // Check authentication status on component mount
     useEffect(() => {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token');  // Check if a token exists in local storage
         if (token) {
-            setIsAuthenticated(true); // If a token exists, the user is authenticated
+            setIsAuthenticated(true);  // Set authenticated if token exists
         }
     }, []);
 
     return (
         <Router>
             <Routes>
-                {/* Login and Signup Routes */}
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/login" element={<Login />} />
+                {/* Signup/Login Routes */}
+                <Route path="/signup" element={<Signup setIsAuthenticated={setIsAuthenticated} />} />
+                <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+                <Route path="/" element={isAuthenticated ? <Navigate to="/project" /> : <Navigate to="/login" />} />
 
-                {/* Project creation and joining routes */}
+                {/* Project page, only accessible if authenticated */}
                 <Route path="/project" element={isAuthenticated ? <Project /> : <Navigate to="/login" />} />
 
-                {/* Editor and Chat routes */}
+                {/* Editor and Chat pages, only accessible if authenticated */}
                 <Route path="/editor" element={isAuthenticated ? <Editor /> : <Navigate to="/login" />} />
                 <Route path="/chat" element={isAuthenticated ? <Chat /> : <Navigate to="/login" />} />
-
-                {/* Default route should redirect to login */}
-                <Route path="/" element={<Navigate to="/login" />} />
             </Routes>
         </Router>
     );

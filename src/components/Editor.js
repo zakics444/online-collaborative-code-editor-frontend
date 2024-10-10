@@ -1,41 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { Editor } from '@monaco-editor/react';  // Correct component import
-import socket from '../services/socket';
+import { Editor } from '@monaco-editor/react';  // Import the correct Editor component
+import socket from '../services/socket';  // Ensure the socket is set up properly
 
 const CodeEditor = () => {
-    const [code, setCode] = useState('');
+    const [code, setCode] = useState('');  // Store the code
+    const [language, setLanguage] = useState('javascript');  // Default language for the editor
 
-    // Handle code changes and emit them through WebSocket
-    const handleCodeChange = (value) => {
-        setCode(value);
-        socket.emit('codeChange', { code: value });
-    };
-
+    // Listen for real-time code updates from other users
     useEffect(() => {
-        // Listen for real-time code updates from other users
         socket.on('receiveCode', (codeData) => {
-            setCode(codeData.code);
+            setCode(codeData.code);  // Update the code from other users
         });
 
-        // Clean up the listener on component unmount
         return () => {
             socket.off('receiveCode');
         };
     }, []);
 
+    // Emit real-time code changes to the backend
+    const handleCodeChange = (newCode) => {
+        setCode(newCode);
+        socket.emit('codeChange', { code: newCode });
+    };
+
     return (
-        <div style={{ height: '90vh' }}>
-            {/* Monaco Editor for a VS Code-like experience */}
+        <div style={{ height: "90vh" }}>
             <Editor
-                height="90vh"
-                language="javascript"  // You can set this dynamically based on user preference
-                theme="vs-dark"  // You can also use 'vs-light' or 'hc-black'
+                height="100%"
+                defaultLanguage={language}
                 value={code}
-                onChange={(ev, value) => handleCodeChange(value)}  // Correct onChange for Monaco Editor
+                theme="vs-dark"  // VS Code dark theme
+                onChange={handleCodeChange}
                 options={{
+                    fontSize: 14,
                     automaticLayout: true,
-                    minimap: { enabled: true },  // Enable/disable minimap (like in VS Code)
-                    wordWrap: "on",  // Word wrap the code
                 }}
             />
         </div>

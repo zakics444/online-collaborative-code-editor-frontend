@@ -2,36 +2,33 @@ import React, { useState } from 'react';
 import axios from '../services/axios';
 import { useNavigate } from 'react-router-dom';
 
-const Signup = () => {
+const Signup = ({ setIsAuthenticated }) => {
     const [formData, setFormData] = useState({ name: '', email: '', password: '' });
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);  // For handling errors
+    const [error, setError] = useState('');  // Error handling
     const navigate = useNavigate();
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
-        setError(null);  // Reset error on input change
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true);  // Show loading state
+        setError('');  // Reset error message
 
         try {
-            const response = await axios.post('/auth/signup', formData);
-            localStorage.setItem('token', response.data.token);  // Save the token
-            setLoading(false);  // Hide loading
-            navigate('/project');  // Redirect to project creation/join page
+            const response = await axios.post('/auth/signup', formData);  // Make the signup request
+            localStorage.setItem('token', response.data.token);  // Store the token
+            setIsAuthenticated(true);  // Set the user as authenticated
+            navigate('/project');  // Redirect to the project page
         } catch (error) {
-            setLoading(false);  // Hide loading
-            setError(error.response?.data?.error || 'Signup failed. Please try again.');
+            console.error('Signup failed:', error);
+            setError('Signup failed. Please try again.');  // Display an error message if signup fails
         }
     };
 
     return (
         <div>
             <h2>Signup</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}  {/* Show error message if exists */}
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
@@ -57,13 +54,12 @@ const Signup = () => {
                     onChange={handleInputChange}
                     required
                 />
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Signing up...' : 'Sign Up'}
-                </button>
+                <button type="submit">Sign Up</button>
             </form>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            <p>Already have an account? <a href="/login">Login here</a></p>
         </div>
     );
 };
 
 export default Signup;
-
