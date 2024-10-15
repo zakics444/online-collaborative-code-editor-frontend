@@ -1,0 +1,84 @@
+/* General styles for the login component */
+.login-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 100px;
+}
+
+/* Heading styles */
+h2 {
+    color: #2c6e49;  /* Green */
+    margin-bottom: 20px;
+}
+
+/* Form styles */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Input fields */
+.login-form input[type="email"],
+.login-form input[type="password"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Input focus */
+.login-form input[type="email"]:focus,
+.login-form input[type="password"]:focus {
+    border-color: #2c6e49;  /* Green border on focus */
+}
+
+/* Login button styles */
+.login-button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #2c6e49;  /* Green */
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-button:hover {
+    background-color: #255c3d;  /* Darker green on hover */
+}
+
+/* Sign-up button styles */
+.signup-button {
+    background: none;
+    border: none;
+    color: #2c6e49;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.signup-button:hover {
+    text-decoration: underline;
+}
+
+/* Paragraph styles */
+p {
+    margin-top: 20px;
+}
+
+/* Responsive design */
+@media (max-width: 500px) {
+    .login-container {
+        width: 90%;
+        padding: 15px;
+    }
+}
